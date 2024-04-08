@@ -282,6 +282,7 @@ async function submit(e: Event) {
   };
 
   await createNewMessageEntry(data.message, data.timestamp, "user");
+  target.reset();
   messagesHistory.prepend(thinkingBubble);
 
   try {
@@ -305,7 +306,6 @@ async function submit(e: Event) {
     }
   }
 
-  target.reset();
   submitElement.removeAttribute("disabled");
   return false;
 }
