@@ -177,6 +177,12 @@
   max-width: 100%;
   object-fit: cover;
 }
+#buildship-chat-widget__messages_history code {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: bottom;
+}
 #buildship-chat-widget__messages_history
   .buildship-chat-widget__message
   .buildship-chat-widget__message-timestamp {
