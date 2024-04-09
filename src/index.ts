@@ -22,6 +22,15 @@ export type WidgetConfig = {
   closeOnOutsideClick: boolean;
   openOnLoad: boolean;
 };
+
+const renderer = new marked.Renderer();
+const linkRenderer = renderer.link;
+// To open links in a new tab
+renderer.link = (href, title, text) => {
+  const parsed = linkRenderer.call(renderer, href, title, text);
+  return parsed.replace(/^<a /, '<a target="_blank" rel="nofollow" ');
+};
+
 const config: WidgetConfig = {
   url: "",
   threadId: undefined,
@@ -147,7 +156,7 @@ async function createNewMessageEntry(
   messageElement.id = `buildship-chat-widget__message--${from}--${timestamp}`;
 
   const messageText = document.createElement("p");
-  messageText.innerHTML = await marked(message);
+  messageText.innerHTML = await marked(message, { renderer });
   messageElement.appendChild(messageText);
 
   const messageTimestamp = document.createElement("p");
@@ -200,7 +209,7 @@ async function streamResponseToMessageEntry(
   if (existingMessageElement) {
     // If the message element already exists, update the text
     const messageText = existingMessageElement.querySelector("p")!;
-    messageText.innerHTML = await marked(message);
+    messageText.innerHTML = await marked(message, { renderer });
     return;
   } else {
     // If the message element doesn't exist yet, create a new one
